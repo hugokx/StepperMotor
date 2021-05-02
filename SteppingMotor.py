@@ -17,6 +17,7 @@ motorPins = (12, 16, 18, 22)    # define pins connected to four phase ABCD of st
 CCWStep = (0x01,0x02,0x04,0x08) # define power supply order for rotating anticlockwise 
 #CWStep = (0x08,0x04,0x02,0x01)  # define power supply order for rotating clockwise
 CWStep = (0x08,0x04,0x02,0x01)  # define power supply order for rotating clockwise
+fstep_matrix = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
 hstep_matrix = [[1,1,0,0,0,0,0,1],[0,1,1,1,0,0,0,0],[0,0,0,1,1,1,0,0],[0,0,0,0,0,1,1,1]]
 
 def setup():
@@ -55,17 +56,20 @@ def moveOnePeriod(direction):
     
     for j in range(0,4,1):      # cycle for power supply order
         tic()
-        for i in range(0,4,1):  # assign to each pin
-            if (direction == 1):# power supply order clockwise
-                #print('Clockwise Full Step')
-                GPIO.output(motorPins[i],((CCWStep[j] == 1<<i)))
-            else :              # power supply order anticlockwise
-                #print('CounterClockWise Full Step')
-                GPIO.output(motorPins[i],((CWStep[j] == 1<<i)))
-        
+        GPIO.output(motorPins[0], hstep_matrix[0][j])
+        GPIO.output(motorPins[1], hstep_matrix[1][j])
+        GPIO.output(motorPins[2], hstep_matrix[2][j])
+        GPIO.output(motorPins[3], hstep_matrix[3][j])
+        toc()
+        #for i in range(0,4,1):  # assign to each pin
+        #    if (direction == 1):# power supply order clockwise
+        #        #print('Clockwise Full Step')
+        #        GPIO.output(motorPins[i],((CCWStep[j] == 1<<i)))
+        #    else :              # power supply order anticlockwise
+        #        #print('CounterClockWise Full Step')
+        #        GPIO.output(motorPins[i],((CWStep[j] == 1<<i)))
         if(ms<3):       # the delay can not be less than 3ms, otherwise it will exceed speed limit of the motor
             ms = 3
-        toc()
         time.sleep(ms*0.001)
   
 def moveOnePeriod_hstep(direction):
