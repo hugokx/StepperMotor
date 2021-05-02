@@ -53,14 +53,37 @@ def tic():
 # as for four phase stepping motor, four steps is a cycle. the function is used to drive the stepping motor clockwise or anticlockwise to take four steps    
 def moveOnePeriod(direction):
     ms = 6
-    
-    for j in range(0,4,1):      # cycle for power supply order
-        tic()
-        GPIO.output(motorPins[0], hstep_matrix[0][j])
-        GPIO.output(motorPins[1], hstep_matrix[1][j])
-        GPIO.output(motorPins[2], hstep_matrix[2][j])
-        GPIO.output(motorPins[3], hstep_matrix[3][j])
-        toc()
+    if(ms<3):       # the delay can not be less than 3ms, otherwise it will exceed speed limit of the motor
+        ms = 3
+    tic()
+    GPIO.output(motorPins[0], hstep_matrix[0][0])
+    GPIO.output(motorPins[1], hstep_matrix[1][0])
+    GPIO.output(motorPins[2], hstep_matrix[2][0])
+    GPIO.output(motorPins[3], hstep_matrix[3][0])
+    time.sleep(ms*0.001)
+    GPIO.output(motorPins[0], hstep_matrix[0][1])
+    GPIO.output(motorPins[1], hstep_matrix[1][1])
+    GPIO.output(motorPins[2], hstep_matrix[2][1])
+    GPIO.output(motorPins[3], hstep_matrix[3][1])
+    time.sleep(ms*0.001)
+    GPIO.output(motorPins[0], hstep_matrix[0][2])
+    GPIO.output(motorPins[1], hstep_matrix[1][2])
+    GPIO.output(motorPins[2], hstep_matrix[2][2])
+    GPIO.output(motorPins[3], hstep_matrix[3][2])
+    time.sleep(ms*0.001)
+    GPIO.output(motorPins[0], hstep_matrix[0][3])
+    GPIO.output(motorPins[1], hstep_matrix[1][3])
+    GPIO.output(motorPins[2], hstep_matrix[2][3])
+    GPIO.output(motorPins[3], hstep_matrix[3][3])
+    time.sleep(ms*0.001)
+    toc()
+    #for j in range(0,4,1):      # cycle for power supply order
+    #    tic()
+    #    GPIO.output(motorPins[0], hstep_matrix[0][j])
+    #    GPIO.output(motorPins[1], hstep_matrix[1][j])
+    #    GPIO.output(motorPins[2], hstep_matrix[2][j])
+    #    GPIO.output(motorPins[3], hstep_matrix[3][j])
+    #    toc()
         #for i in range(0,4,1):  # assign to each pin
         #    if (direction == 1):# power supply order clockwise
         #        #print('Clockwise Full Step')
